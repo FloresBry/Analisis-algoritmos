@@ -90,6 +90,7 @@ def comparacion_permutas(tamanio):
     # Agrega los tiempos a las listas correspondientes
     tiempos_prog_din.append(tiempo_prog_din)
     tiempos_fuerza_bruta.append(tiempo_fuerza_bruta)
+    root.geometry("500x600")
     graficar_resultados()
 # Función para graficar los resultados
 def graficar_resultados():
@@ -124,7 +125,7 @@ if __name__=="__main__":
     # Configuración de la ventana principal de Tkinter
     root = tk.Tk()
     root.title("Comparacion Complejidad temporal Permutaciones")
-    root.geometry("500x600")
+    root.geometry("500x200")
     label = tk.Label(root, text="Comparación de Permutaciones")
     label.pack(pady=10)
     canvas_frame = tk.Frame(root)
