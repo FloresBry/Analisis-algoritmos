@@ -1,4 +1,7 @@
-
+import time
+import random
+#función para generar todas las permutaciones de una lista 
+# con programación dinámica
 def permutas(lista,memoria={}):
     # Verificar si la permutación ya está en la memoria
     if tuple(lista) in memoria:
@@ -26,9 +29,30 @@ def permutas(lista,memoria={}):
     # Devolver todas las permutaciones encontradas
     return permutas_totales
 
+#Función para medir el tiempo de ejecución de una función
+def medir_tiempo(funcion,lista):
+    #Empieza el conteo de tiempo
+    inicio = time.perf_counter()
+    resultado = funcion(lista)
+    #Termina el conteo de tiempo
+    fin = time.perf_counter()
+    #Calcula el tiempo en milisegundos
+    tiempo_ms = (fin - inicio) * 1000
+    #retorna el resultado y el tiempo en milisegundos
+    return resultado, tiempo_ms
+def generador_permutas_fuerza_bruta(lista):
+    global permutas
+    n = len(lista)
+    permutas.append(list(lista))
+    while len(permutas) < factorial(n):
+        nueva_lista = list(lista)
+        random.shuffle(nueva_lista)
+        
+        if nueva_lista not in permutas:
+            permutas.append(nueva_lista)
+
 if __name__=="__main__":
     
-    lista = [1, 2, 3,4]
-    print(len(permutas(lista)))
+    
     
     
