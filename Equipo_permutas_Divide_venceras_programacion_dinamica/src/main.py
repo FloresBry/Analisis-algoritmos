@@ -1,7 +1,6 @@
 import time
 import random
 import tkinter as tk
-from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 # Listas globales para almacenar los tiempos y tamaños de entrada
@@ -98,9 +97,11 @@ def graficar_resultados():
     global tiempos_prog_din
     global tiempos_fuerza_bruta
     global tamanios_entrada
+    for widget in canvas_frame.winfo_children():
+        widget.destroy()
     # Crea la figura y los ejes para la gráfica
     fig, ax = plt.subplots(figsize=(8, 6))
-    # Plotea los tiempos de ambas funciones
+    # grafica los tiempos de ambas funciones
     ax.plot(tamanios_entrada, tiempos_prog_din, marker='o', label='Programación Dinámica', color='blue')
     ax.plot(tamanios_entrada, tiempos_fuerza_bruta, marker='o', label='Fuerza Bruta', color='red')
     ax.set_xlabel('Tamaño de la lista')
@@ -108,20 +109,34 @@ def graficar_resultados():
     ax.set_title('Comparación de Tiempos de Permutaciones')
     ax.legend()
     ax.grid(True)
-    plt.show()
+    # Agrega la gráfica al frame de Tkinter
+    canvas=FigureCanvasTkAgg(fig, master=canvas_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack()
+    
+# Función para cerrar la ventana correctamente
+def cerrar_ventana():
+    # Detener el bucle principal de Tkinter y cerrar la ventana
+    root.quit()
+    root.destroy()
     
 if __name__=="__main__":
+    # Configuración de la ventana principal de Tkinter
     root = tk.Tk()
     root.title("Comparacion Complejidad temporal Permutaciones")
-    root.geometry("400x400")
-    label = ttk.Label(root, text="Comparación de Permutaciones")
+    root.geometry("500x600")
+    label = tk.Label(root, text="Comparación de Permutaciones")
     label.pack(pady=10)
+    canvas_frame = tk.Frame(root)
     tamanio_entrada =tk.Entry(root, width=20, font=("Arial", 14),justify="center", textvariable=tk.StringVar(value="3"))
     tamanio_entrada.pack(pady=5)
-    label_generar = ttk.Label(root, text="Generar lista de tamaño seleccionado")
+    label_generar = tk.Label(root, text="Generar lista de tamaño seleccionado")
     label_generar.pack(pady=5)
-    boton_permutas = ttk.Button(root, text="Generar Permutaciones", command=lambda: comparacion_permutas(int(tamanio_entrada.get())))
+    boton_permutas = tk.Button(root, text="Generar Permutaciones", command=lambda: comparacion_permutas(int(tamanio_entrada.get())))
     boton_permutas.pack(pady=20)
+    canvas_frame.pack()
+    # Configura la acción al cerrar la ventana
+    root.protocol("WM_DELETE_WINDOW",cerrar_ventana)
     root.mainloop()
     
     
