@@ -1,5 +1,13 @@
 import time
 import random
+import tkinter as tk
+from tkinter import ttk, messagebox
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+# Listas globales para almacenar los tiempos y tamaños de entrada
+tiempos_prog_din=[0]
+tiempos_fuerza_bruta=[0]
+tamanios_entrada=[0]
 #función para generar todas las permutaciones de una lista 
 # con programación dinámica
 def permutas(lista,memoria={}):
@@ -40,8 +48,21 @@ def medir_tiempo(funcion,lista):
     tiempo_ms = (fin - inicio) * 1000
     #retorna el resultado y el tiempo en milisegundos
     return resultado, tiempo_ms
+
+#Función para calcular el factorial de un número
+def factorial(n):
+    if n < 0:
+        return 0
+    if n == 0:
+        return 1
+    resultado = 1
+    for i in range(1, n + 1):
+        resultado *= i
+    return resultado
+
+#Función de fuerza bruta para generar permutaciones
 def generador_permutas_fuerza_bruta(lista):
-    global permutas
+    permutas=[]
     n = len(lista)
     permutas.append(list(lista))
     while len(permutas) < factorial(n):
@@ -50,8 +71,58 @@ def generador_permutas_fuerza_bruta(lista):
         
         if nueva_lista not in permutas:
             permutas.append(nueva_lista)
+    return permutas
+#Función para generar una lista de números del 0 al tamaño-1
+def generar_lista(tamanio):
+    return list(range(tamanio))  
 
+def comparacion_permutas(tamanio):
+    # se mencionan las variables globales
+    global tiempos_prog_din
+    global tiempos_fuerza_bruta
+    global tamanios_entrada
+    # Agrega el tamaño de la entrada a la lista
+    tamanios_entrada.append(tamanio)
+    # Genera la lista de números
+    lista = generar_lista(tamanio)
+    # Mide el tiempo de ambas funciones
+    _, tiempo_prog_din = medir_tiempo(permutas, lista)
+    _, tiempo_fuerza_bruta = medir_tiempo(generador_permutas_fuerza_bruta, lista)
+    # Agrega los tiempos a las listas correspondientes
+    tiempos_prog_din.append(tiempo_prog_din)
+    tiempos_fuerza_bruta.append(tiempo_fuerza_bruta)
+    graficar_resultados()
+# Función para graficar los resultados
+def graficar_resultados():
+    # se mencionan las variables globales
+    global tiempos_prog_din
+    global tiempos_fuerza_bruta
+    global tamanios_entrada
+    # Crea la figura y los ejes para la gráfica
+    fig, ax = plt.subplots(figsize=(8, 6))
+    # Plotea los tiempos de ambas funciones
+    ax.plot(tamanios_entrada, tiempos_prog_din, marker='o', label='Programación Dinámica', color='blue')
+    ax.plot(tamanios_entrada, tiempos_fuerza_bruta, marker='o', label='Fuerza Bruta', color='red')
+    ax.set_xlabel('Tamaño de la lista')
+    ax.set_ylabel('Tiempo (ms)')
+    ax.set_title('Comparación de Tiempos de Permutaciones')
+    ax.legend()
+    ax.grid(True)
+    plt.show()
+    
 if __name__=="__main__":
+    root = tk.Tk()
+    root.title("Comparacion Complejidad temporal Permutaciones")
+    root.geometry("400x400")
+    label = ttk.Label(root, text="Comparación de Permutaciones")
+    label.pack(pady=10)
+    tamanio_entrada =tk.Entry(root, width=20, font=("Arial", 14),justify="center", textvariable=tk.StringVar(value="3"))
+    tamanio_entrada.pack(pady=5)
+    label_generar = ttk.Label(root, text="Generar lista de tamaño seleccionado")
+    label_generar.pack(pady=5)
+    boton_permutas = ttk.Button(root, text="Generar Permutaciones", command=lambda: comparacion_permutas(int(tamanio_entrada.get())))
+    boton_permutas.pack(pady=20)
+    root.mainloop()
     
     
     
