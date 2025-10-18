@@ -7,6 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 tiempos_prog_din=[0]
 tiempos_fuerza_bruta=[0]
 tamanios_entrada=[0]
+espera_ventana=None
 #función para generar todas las permutaciones de una lista 
 # con programación dinámica
 def permutas(lista,memoria={}):
@@ -80,6 +81,8 @@ def comparacion_permutas(tamanio):
     global tiempos_prog_din
     global tiempos_fuerza_bruta
     global tamanios_entrada
+    # Muestra la ventana de espera
+    ventana_espera()
     # Agrega el tamaño de la entrada a la lista
     tamanios_entrada.append(tamanio)
     # Genera la lista de números
@@ -114,7 +117,27 @@ def graficar_resultados():
     canvas=FigureCanvasTkAgg(fig, master=canvas_frame)
     canvas.draw()
     canvas.get_tk_widget().pack()
-    
+    # activa el botón para permitir nuevas comparaciones
+    ventana_finalizado()
+
+# Función para mostrar una ventana de espera
+def ventana_espera():
+    global espera_ventana
+    espera_ventana = tk.Toplevel(root)
+    espera_ventana.title("Procesando...")
+    espera_ventana.geometry("200x100")
+    etiqueta_espera = tk.Label(espera_ventana, text="Por favor, espere...")
+    etiqueta_espera.pack(pady=20)
+# Función para mostrar una ventana de finalización
+def ventana_finalizado():
+    global espera_ventana
+    if espera_ventana is not None:
+        espera_ventana.destroy()
+    finalizado_ventana = tk.Toplevel(root)
+    finalizado_ventana.title("Finalizado")
+    finalizado_ventana.geometry("200x100")
+    etiqueta_finalizado = tk.Label(finalizado_ventana, text="¡Proceso finalizado!")
+    etiqueta_finalizado.pack(pady=20)
 # Función para cerrar la ventana correctamente
 def cerrar_ventana():
     # Detener el bucle principal de Tkinter y cerrar la ventana
