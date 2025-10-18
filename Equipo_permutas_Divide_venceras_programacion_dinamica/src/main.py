@@ -93,7 +93,7 @@ def comparacion_permutas(tamanio):
     # Agrega los tiempos a las listas correspondientes
     tiempos_prog_din.append(tiempo_prog_din)
     tiempos_fuerza_bruta.append(tiempo_fuerza_bruta)
-    root.geometry("7000x600")
+    root.geometry("700x600")
     graficar_resultados()
 # Función para graficar los resultados
 def graficar_resultados():
