@@ -3,11 +3,14 @@ import random
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+
 # Listas globales para almacenar los tiempos y tamaños de entrada
 tiempos_prog_din=[0]
 tiempos_fuerza_bruta=[0]
 tamanios_entrada=[0]
 espera_ventana=None
+
 #función para generar todas las permutaciones de una lista 
 # con programación dinámica
 def permutas(lista,memoria={}):
@@ -72,6 +75,7 @@ def generador_permutas_fuerza_bruta(lista):
         if nueva_lista not in permutas:
             permutas.append(nueva_lista)
     return permutas
+
 #Función para generar una lista de números del 0 al tamaño-1
 def generar_lista(tamanio):
     return list(range(tamanio))  
@@ -95,6 +99,7 @@ def comparacion_permutas(tamanio):
     tiempos_fuerza_bruta.append(tiempo_fuerza_bruta)
     root.geometry("700x600")
     graficar_resultados()
+    
 # Función para graficar los resultados
 def graficar_resultados():
     # se mencionan las variables globales
@@ -128,6 +133,7 @@ def ventana_espera():
     espera_ventana.geometry("200x100")
     etiqueta_espera = tk.Label(espera_ventana, text="Por favor, espere...")
     etiqueta_espera.pack(pady=20)
+
 # Función para mostrar una ventana de finalización
 def ventana_finalizado():
     global espera_ventana
@@ -138,6 +144,7 @@ def ventana_finalizado():
     finalizado_ventana.geometry("200x100")
     etiqueta_finalizado = tk.Label(finalizado_ventana, text="¡Proceso finalizado!")
     etiqueta_finalizado.pack(pady=20)
+
 # Función para cerrar la ventana correctamente
 def cerrar_ventana():
     # Detener el bucle principal de Tkinter y cerrar la ventana
